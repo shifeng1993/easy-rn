@@ -2,6 +2,10 @@ import React, {Component} from 'react';
 import {StyleSheet, View, Text, FlatList, Dimensions, ActivityIndicator} from 'react-native';
 
 class list extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {};
+  }
   render() {
     const {
       data,

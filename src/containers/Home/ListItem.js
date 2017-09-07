@@ -5,8 +5,11 @@ import {
   View,
   Button,
   Image,
-  Platform
+  Platform,
+  Dimensions
 } from 'react-native';
+
+const {height, width} = Dimensions.get('window');
 
 class ListItem extends Component {
   render() {
@@ -21,30 +24,55 @@ class ListItem extends Component {
           source={{
           uri: item.goodsImg
         }}/>
-        <View style={{
+        <View
+          style={{
           flex: 1,
-          height: itemHeight
+          height: itemHeight,
+          marginLeft: 10,
+          paddingTop: 5,
+          paddingBottom: 5,
+          borderTopWidth: 0.5,
+          borderColor: '#eeeeee'
         }}>
           <View style={styles.goodsName}>
-            <Text>{item.goodsName}</Text>
+            <Text style={styles.goodsNameText} numberOfLines={2}>{item.goodsName}</Text>
+          </View>
+          <View style={styles.supplierNickName}>
+            <Text style={styles.supplierNickNameText}>{item.supplier.nickname}</Text>
+          </View>
+          <View style={styles.goodsAttr}>
+            {this._returnAttr('包邮', 1)}
           </View>
           <View style={styles.goodsPrice}>
-            <Text>{((item.goodsPrice / 100).toString().includes('.')
-                ? (((item.goodsPrice / 100).toString().split(".")[1].length === 1)
-                  ? item.goodsPrice / 100 + '0'
-                  : item.goodsPrice / 100)
-                : item.goodsPrice / 100 + '.00').toString().split(".")[0]}</Text>
-            <Text>{'.' + ((item.goodsPrice / 100).toString().includes('.')
-                ? (((item.goodsPrice / 100).toString().split(".")[1].length === 1)
-                  ? item.goodsPrice / 100 + '0'
-                  : item.goodsPrice / 100)
-                : item.goodsPrice / 100 + '.00')
-                .toString()
-                .split(".")[1]}</Text>
+            <Text style={styles.goodsPriceText}>
+              ￥<Text style={{
+        fontSize: 20,
+        fontWeight: '400'
+      }}>{this._returnPrice(item.goodsPrice)[0]}</Text>{'.' + this._returnPrice(item.goodsPrice)[1]}</Text>
           </View>
         </View>
       </View>
     );
+  }
+  _returnPrice(number) {
+    return ((number / 100).toString().includes('.')
+      ? (((number / 100).toString().split(".")[1].length === 1)
+        ? number / 100 + '0'
+        : number / 100)
+      : number / 100 + '.00')
+      .toString()
+      .split(".");
+  }
+  _returnAttr(str, index) {
+    if (index === 1) {
+      return (
+        <View style={{
+          width: 10 * str.length + 6,
+        }}>
+          <Text style={styles.goodsAttrText}>{str}</Text>
+        </View>
+      )
+    }
   }
 }
 
@@ -53,6 +81,40 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'row',
     paddingBottom: 5
+  },
+  goodsName: {
+    width: width - 110 - 20,
+    height: 32
+  },
+  goodsNameText: {
+    color: '#051b28'
+  },
+  supplierNickName: {
+    height: 22
+  },
+  supplierNickNameText: {
+    color: '#999999',
+    fontSize: 12,
+    lineHeight: 20
+  },
+  goodsAttr: {
+  },
+  goodsAttrText: {
+    padding: 0,
+    paddingTop: 2,
+    fontSize: 10,
+    textAlign: 'center',
+    color: '#ffb000',
+    borderWidth: 1,
+    borderColor: '#ffb000',
+    borderRadius: 3
+  },
+  goodsPrice: {
+    height: 30
+  },
+  goodsPriceText: {
+    color: '#ff5000',
+    fontWeight: '500'
   }
 });
 

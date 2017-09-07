@@ -12,7 +12,7 @@ import {
 } from 'react-native';
 
 import http from '../../utils/http'
-import FlatList from '../../components/FlatList'
+import FlatList from '../../components/advancedView/FlatList'
 import ListItem from './ListItem.js'
 
 // 常量设置
@@ -22,17 +22,18 @@ const INITIAL_PAGE = 1;
 const CONTENT_HEIGHT = Dimensions
   .get('window')
   .height - 100;
-const TO_END = 0.001;
+const TO_END = 0.01;
 
 class List extends Component {
   constructor(props) {
     super(props);
+    this.goodsList = {
+      data: [],
+      currentPage: INITIAL_PAGE,
+      pageSize: PAGE_SIZE
+    }
     this.state = {
-      goodsList: {
-        data: [],
-        currentPage: INITIAL_PAGE,
-        pageSize: PAGE_SIZE
-      }
+      goodsListData: this.goodsList.data
     }
   }
   getGoodsList(currentPage) {
@@ -44,17 +45,14 @@ class List extends Component {
       .then(res => {
         if (res.status === 200) {
           if (currentPage === 1) {
-            this.setState({goodsList: res.data})
+            this.goodsList = res.data
           } else {
-            this.setState({
-              goodsList: {
-                data: this.state.goodsList.data.concat(res.data.data),
-                pageTotal: parseInt(res.data.pageTotal),
-                currentPage: parseInt(res.data.currentPage),
-                pageSize: parseInt(res.data.pageSize)
-              }
-            });
+            this.goodsList.data = this.goodsList.data.concat(res.data.data)
+            this.goodsList.pageTotal = parseInt(res.data.pageTotal)
+            this.goodsList.currentPage = parseInt(res.data.currentPage)
+            this.goodsList.pageSize = parseInt(res.data.pageSize)
           }
+          this.setState({goodsListData: this.goodsList.data})
         } else {
           alert(res)
         }
@@ -64,7 +62,7 @@ class List extends Component {
     const {item, itemHeight} = this.props
     return (
       <FlatList
-        data={this.state.goodsList.data}
+        data={this.state.goodsListData}
         extraData={this.state}
         renderItem={({item, index}) => (<ListItem key={index} item={item} itemHeight={ITEM_HEIGHT}/>)}
         itemHeight={ITEM_HEIGHT}
@@ -85,20 +83,21 @@ class List extends Component {
   _appendList(info) {
     // 用百分比偏移量来限制滑动的力度
     if (info.distanceFromEnd <= CONTENT_HEIGHT * TO_END) {
-      if (this.state.goodsList.data.length === 0) {
+      if (this.state.goodsListData.length === 0) {
         // 首次加载
         this.getGoodsList(INITIAL_PAGE);
       } else {
         // 后续加载
         if (this._hasMore()) {
-          this.getGoodsList(this.state.goodsList.currentPage + 1);
+          this.getGoodsList(this.goodsList.currentPage + 1);
         }
       }
     }
   }
+  // 动态返回有没有更多的布尔值
   _hasMore() {
     // 必须是不等于，如果小于的话，首次加载会出现 "没有更多了"，而不是 "正在加载"
-    return this.state.goodsList.data.length !== this.state.goodsList.pageTotal
+    return this.state.goodsListData.length !== this.goodsList.pageTotal
   }
 }
 

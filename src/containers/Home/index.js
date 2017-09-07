@@ -1,17 +1,10 @@
 import React, {Component} from 'react';
-import {
-  StyleSheet,
-  Text,
-  View,
-  TextInput,
-  Button,
-  StatusBar,
-  Platform
-} from 'react-native';
+import {StyleSheet, Text, View, TextInput, Button} from 'react-native';
 
+import StatusBar from '../../components/baseView/StatusBar'
 import List from './List'
 
-export default class Home extends Component {
+class Home extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -19,16 +12,9 @@ export default class Home extends Component {
     }
   }
   render() {
-    let style;
-    if (Platform.OS === 'ios') {
-      style = iosStyles
-    } else if (Platform.OS === 'android') {
-      style = androidStyles
-    }
     return (
       <View style={styles.container}>
-        <StatusBar backgroundColor="#cf4218" barStyle="light-content"/>
-        <View style={style.statusBar}></View>
+        <StatusBar backgroundColor={"#cf4218"} barStyle={"light-content"}/>
         <View style={styles.header}>
           <TextInput
             style={styles.serachText}
@@ -71,15 +57,4 @@ const styles = StyleSheet.create({
   }
 });
 
-const iosStyles = StyleSheet.create({
-  statusBar: {
-    height: 20,
-    backgroundColor: '#cf4218'
-  }
-});
-
-const androidStyles = StyleSheet.create({
-  statusBar: {
-    height: 0
-  }
-});
+export default Home

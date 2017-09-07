@@ -4,6 +4,7 @@ import TabNavigator from 'react-native-tab-navigator';
 import {StyleSheet} from 'react-native';
 // react 原生api Platform.OS判断是否为ios和android
 
+import storage from './utils/storage'
 import {Home, Cart, My} from './containers';
 
 class App extends Component {
@@ -11,7 +12,7 @@ class App extends Component {
     super(props);
     this.state = {
       // 进入默认在主页
-      selectedTab: 'Home'
+      selectedTab: 'My'
     }
   }
   render() {
