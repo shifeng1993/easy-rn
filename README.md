@@ -25,6 +25,8 @@
 
 （7）订单页面，购买后产生的订单详情，包含商品属性
 
+排坑指南：
+https://www.shifeng1993.com/2017/09/07/reactnative_bug/
 
 任务。
 1.app启动图标，
