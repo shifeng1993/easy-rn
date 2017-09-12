@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import {StyleSheet, Text, View, TextInput, Button} from 'react-native';
+import Orientation from 'react-native-orientation';
 
 import StatusBar from '../../components/baseView/StatusBar'
 import List from './List'
@@ -10,6 +11,10 @@ class Home extends Component {
     this.state = {
       serachText: null
     }
+  }
+  componentWillMount() {
+    // 禁止横屏
+    Orientation.lockToPortrait();
   }
   render() {
     return (
