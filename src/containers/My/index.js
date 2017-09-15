@@ -9,9 +9,14 @@ import {
   Button,
   Dimensions
 } from 'react-native';
+import {bindActionCreators} from 'redux'
+import {connect} from 'react-redux'
 import Icon from 'react-native-vector-icons/FontAwesome';
 import StatusBar from '../../components/baseView/StatusBar'
 import BadgeView from '../../components/advancedView/BadgeView'
+
+// 引入action
+import * as userAction from '../../store/actions/user';
 
 const {height, width} = Dimensions.get('window');
 const useruuid = '';
@@ -24,7 +29,6 @@ class My extends Component {
       userinfo: {}
     }
   }
-  signIn() {}
   render() {
     const { navigate } = this.props.navigation;
     return (
@@ -78,7 +82,7 @@ class My extends Component {
             <TouchableHighlight
               style={styles.favoriteWrapItem}
               underlayColor={'#f4f4f4'}
-              onPress={() => navigate('Login')}>
+              onPress={() => {navigate('Login')}}>
               <View>
                 <Text style={styles.favoriteWrapItemNumber}>89</Text>
                 <Text style={styles.favoriteWrapItemText}>收藏夹</Text>
@@ -164,6 +168,20 @@ class My extends Component {
     )
   }
 }
+
+
+// 同步store中的state，状态改变，实时更新
+const mapStateToProps = state => {
+  return {userinfo: state.user.userinfo};
+}
+// 同步store中的action
+const mapDispatchToProps = (dispatch) => ({
+  actions: bindActionCreators(userAction, dispatch),
+  dispatch: dispatch
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(My)
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -317,5 +335,3 @@ const styles = StyleSheet.create({
     lineHeight: width/5/4+6
   }
 });
-
-export default My;

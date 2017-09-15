@@ -5,6 +5,9 @@ import Orientation from 'react-native-orientation';
 import StatusBar from '../../components/baseView/StatusBar'
 import List from './List'
 
+// 引入样式
+import styles from '../../styles/baseStyle'
+
 class Home extends Component {
   constructor(props) {
     super(props);
@@ -20,16 +23,16 @@ class Home extends Component {
     return (
       <View style={styles.container}>
         <StatusBar backgroundColor={"#cf4218"} barStyle={"light-content"}/>
-        <View style={styles.header}>
+        <View style={homeStyle.header}>
           <TextInput
-            style={styles.serachText}
+            style={[styles.textInput, homeStyle.serachText]}
             underlineColorAndroid="transparent"
             maxLength={40}
             autoFocus={false}
             onChangeText={(serachText) => this.setState({serachText})}
             value={this.state.serachText}/>
         </View>
-        <View style={styles.content}>
+        <View style={homeStyle.content}>
           <List/>
         </View>
       </View>
@@ -37,12 +40,7 @@ class Home extends Component {
   }
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    // justifyContent: 'center', alignItems: 'center',
-    backgroundColor: '#F5FCFF'
-  },
+const homeStyle = StyleSheet.create({
   header: {
     padding: 10,
     backgroundColor: '#ff5700',

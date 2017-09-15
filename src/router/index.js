@@ -2,9 +2,16 @@ import React, {Component} from 'react';
 import {Dimensions, Platform} from 'react-native';
 import {StackNavigator, TabNavigator} from 'react-navigation';
 import Icon from 'react-native-vector-icons/Ionicons';
-import CardStackStyleInterpolator from 'react-navigation/src/views/CardStackStyleInterpolator';
+import CardStackStyleInterpolator from 'react-navigation/src/views/CardStack/CardStackStyleInterpolator';
 // 引入页面容器
-import {Home, Cart, My, Login} from '../containers';
+import {
+  Home,
+  Cart,
+  My,
+  Login,
+  SignIn,
+  SignUp
+} from '../containers';
 
 // 设置常量
 const {height, width} = Dimensions.get('window');
@@ -33,8 +40,10 @@ const tabbar = TabNavigator({
   }
 }, {
   tabBarPosition: 'bottom',
-  swipeEnabled: true,
+  swipeEnabled: false,
   animationEnabled: false,
+  lazy: true,
+  backBehavior: 'initialRoute',
   tabBarOptions: {
     style: {
       height: (Platform.OS === 'ios')
@@ -53,6 +62,7 @@ const tabbar = TabNavigator({
     indicatorStyle: {
       height: 0
     },
+    scrollEnabled: false,
     activeBackgroundColor: '#fff',
     activeTintColor: '#ff6600',
     inactiveBackgroundColor: '#fff',
@@ -74,9 +84,24 @@ const AppNavigator = StackNavigator({
     navigationOptions: {
       header: null
     }
+  },
+  SignIn: {
+    screen: SignIn,
+    navigationOptions: {
+      header: null
+    }
+  },
+  SignUp: {
+    screen: SignUp,
+    navigationOptions: {
+      header: null
+    }
   }
 }, {
-  transitionConfig: () => ({screenInterpolator: CardStackStyleInterpolator.forHorizontal})
+  initialRouteName: 'Main',
+  transitionConfig: () => ({screenInterpolator: CardStackStyleInterpolator.forHorizontal}),
+  // onTransitionStart: () => ({screenInterpolator: CardStackStyleInterpolator.forHorizontal}),
+  onTransitionEnd: () => ({screenInterpolator: CardStackStyleInterpolator.forInitial})
 });
 
-export {AppNavigator};
+export default AppNavigator;

@@ -12,7 +12,6 @@ import {
 } from 'react-native';
 import {bindActionCreators} from 'redux'
 import {connect} from 'react-redux'
-import http from '../../utils/http'
 import FlatList from '../../components/advancedView/FlatList'
 import ListItem from './ListItem.js'
 
