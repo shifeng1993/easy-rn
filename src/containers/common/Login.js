@@ -35,11 +35,7 @@ class Login extends Component {
     const {routes} = this.props;
     const goHome = NavigationActions.reset({
       index: 0,
-      actions: [
-        NavigationActions.navigate({ 
-          routeName: 'Main'
-      })
-      ]
+      actions: [NavigationActions.navigate({routeName: 'Main'})]
     })
     return (
       <View style={styles.container}>
@@ -49,12 +45,8 @@ class Login extends Component {
             style={styles.headerLeft}
             underlayColor={'#f4f4f4'}
             onPress={() => {
-              goBack()
-              dispatch(goHome)
-              console.log(routes)
-              {/* goBack(state.key) */}
-            {/* storage.removeItem('useruuid') */
-            }
+            goBack();
+            dispatch(goHome);
           }}>
             <View>
               <Icon
@@ -78,7 +70,7 @@ class Login extends Component {
           <Image
             style={loginStyle.userImg}
             source={{
-            uri: 'http://192.168.212.60:3333/img/12.jpg'
+            uri: 'https://api.shifeng1993.com/img/11.jpg'
           }}/>
           <View style={loginStyle.btnContent}>
             <TouchableHighlight

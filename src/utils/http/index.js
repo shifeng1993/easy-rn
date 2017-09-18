@@ -1,7 +1,7 @@
 import axios from 'axios';
 import qs from 'querystring';
 import baseConfig from '../../common/baseConfig.js';
-axios.defaults.baseURL = baseConfig.baseUrl + ':' + baseConfig.port + baseConfig.prefix;
+axios.defaults.baseURL = baseConfig.baseUrl + (!baseConfig.port? '' : ':') + baseConfig.port + baseConfig.prefix;
 
 // fetch感觉略麻烦，不清爽，直接引了个axios，用es7写的。
 export default class http {

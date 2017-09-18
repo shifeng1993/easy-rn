@@ -82,7 +82,8 @@ const AppNavigator = StackNavigator({
   Login: {
     screen: Login,
     navigationOptions: {
-      header: null
+      header: null,
+      gesturesEnabled: false
     }
   },
   SignIn: {

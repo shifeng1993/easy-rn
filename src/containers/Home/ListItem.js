@@ -23,7 +23,8 @@ class ListItem extends Component {
         }}
           source={{
           uri: item.goodsImg
-        }}/>
+        }}
+        cache={'force-cache'}/>
         <View
           style={{
           flex: 1,

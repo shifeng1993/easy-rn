@@ -12,7 +12,6 @@ import {
 import {bindActionCreators} from 'redux'
 import {connect} from 'react-redux'
 
-
 // 引入action
 import * as userAction from '../../store/actions/user';
 
@@ -45,7 +44,7 @@ class SignUp extends Component {
                 color="#333"/>
             </View>
           </TouchableHighlight>
-          
+
           <View style={styles.headerRight}>
             <Text
               style={{
@@ -57,7 +56,7 @@ class SignUp extends Component {
           <Image
             style={styles.userImg}
             source={{
-            uri: 'http://192.168.212.60:3333/img/12.jpg'
+            uri: 'https://api.shifeng1993.com/img/11.jpg'
           }}/>
           <View style={styles.btnContent}>
             <TouchableHighlight

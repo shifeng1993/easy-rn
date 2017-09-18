@@ -2,8 +2,9 @@ import React, {Component} from "react";
 import {Provider, connect} from "react-redux";
 import {AsyncStorage, BackHandler} from "react-native";
 import {NavigationActions, addNavigationHelpers} from "react-navigation";
-
+import http from './src/utils/http'
 global.storage = AsyncStorage;
+global.http = http;
 
 import getStore from "./src/store";
 import AppNavigator from './src/router';
@@ -19,6 +20,12 @@ const mapStateToProps = (state) => ({nav: state.nav});
 
 class App extends Component {
   /*处理安卓硬件返回按键 开始*/
+  componentWillMount() {
+    let useruuid =  '';
+    storage.getItem('useruuid').then(useruuid => {
+      this.setState((prevState, props) => ({useruuid: useruuid}))
+    })
+  }
   componentDidMount() {
     BackHandler.addEventListener("hardwareBackPress", this.onBackPress);
   }
@@ -27,10 +34,27 @@ class App extends Component {
   }
   onBackPress = () => {
     const {dispatch, nav} = this.props;
+    const currentScreen = this.getCurrentRouteName(nav)
+    const goHome = NavigationActions.reset({
+      index: 0,
+      actions: [
+        NavigationActions.navigate({ 
+          routeName: 'Main'
+      })
+      ]
+    })
     if (nav.index === 0) {
       return false;
     }
-    dispatch(NavigationActions.back());
+    if (currentScreen === 'Login') {
+      if (!this.useruuid) {
+        dispatch(goHome);
+      } else {
+        dispatch(NavigationActions.back());
+      }
+    } else{
+      dispatch(NavigationActions.back());
+    }
     return true;
   };
   /*处理安卓硬件返回按键 结束*/

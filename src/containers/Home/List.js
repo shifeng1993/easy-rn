@@ -1,97 +1,46 @@
 import React, {Component} from 'react';
-import {
-  StyleSheet,
-  Text,
-  View,
-  TextInput,
-  Button,
-  StatusBar,
-  Platform,
-  Dimensions,
-  TouchableOpacity
-} from 'react-native';
-import {bindActionCreators} from 'redux'
-import {connect} from 'react-redux'
-import FlatList from '../../components/advancedView/FlatList'
+import {StyleSheet, Text, View, Platform, Dimensions} from 'react-native';
+import FlatList from "../../components/advancedView/FlatList";
 import ListItem from './ListItem.js'
 
-// 引入action
-import * as goodsAction from '../../store/actions/goods';
-
 // 常量设置
+const {width, height} = Dimensions.get('window');
 const ITEM_HEIGHT = 100;
-const INITIAL_PAGE = 1;
-const CONTENT_HEIGHT = Dimensions
-  .get('window')
-  .height - 100;
-const TO_END = 0.000001;
 
 class List extends Component {
   constructor(props) {
     super(props);
-  }
-  render() {
-    const {item, itemHeight} = this.props
-    const {actions} = this.props
-    return (
-      <FlatList
-        data={this.props.goodsList.data}
-        extraData={this.state}
-        renderItem={({item, index}) => (<ListItem key={index} item={item} itemHeight={ITEM_HEIGHT}/>)}
-        itemHeight={ITEM_HEIGHT}
-        onRefresh={() => {
-        actions.getGoodsList(INITIAL_PAGE);
-      }}
-        onEndReachedThreshold={TO_END}
-        onEndReached={(info) => {
-        this._appendList(info);
-      }}
-        style={{
-        height: CONTENT_HEIGHT
-      }}
-        hasMore={this._hasMore()}/>
-    );
-  }
-
-  _appendList(info) {
-    const {actions} = this.props
-    // 用百分比偏移量来限制滑动的力度
-    if (info.distanceFromEnd <= CONTENT_HEIGHT * TO_END) {
-      if (this.props.goodsList.data.length === 0) {
-        // 首次加载
-        actions.getGoodsList(INITIAL_PAGE);
-      } else {
-        // 后续加载
-        if (this._hasMore()) {
-          const currentPage = parseInt(this.props.goodsList.currentPage)
-          actions.getGoodsList(currentPage + 1);
-        }
-      }
+    this.state = {
+      layout: 'list'
     }
   }
-  // 动态返回有没有更多的布尔值
-  _hasMore() {
-    // 必须是不等于，如果小于的话，首次加载会出现 "没有更多了"，而不是 "正在加载"
-    return this.props.goodsList.data.length !== this.props.goodsList.pageTotal
-  }
+  render() {
+    return (<FlatList
+      layout={this.state.layout}
+      onFetch={this._onFetch}
+      item={this._renderItem}/>);
+  };
+  _onFetch = async(page = 1, startFetch, abortFetch) => {
+    try {
+      let params = {}
+      params.currentPage = page;
+      params.pageSize = 10;
+      let goodList = []
+      const res = await http.get('/goods/getGoodsList', params)
+      goodList = res.data.data
+      startFetch(goodList, 10);
+    } catch (err) {
+      abortFetch();
+      console.log(err);
+    }
+  };
+  _renderItem = (item, index, separator) => {
+    if (this.state.layout === 'list') {
+      return (<ListItem key={index} item={item} itemHeight={ITEM_HEIGHT}/>);
+    } else if (this.state.layout === 'grid') {
+      return (<ListItem key={index} item={item} itemHeight={ITEM_HEIGHT}/>);
+    }
+  };
 }
 
-const styles = StyleSheet.create({
-  rowItem: {
-    flex: 1,
-    flexDirection: 'row',
-    paddingBottom: 5
-  }
-});
-
-// 同步store中的state，状态改变，实时更新
-const mapStateToProps = state => {
-  return {goodsList: state.goods.goodsList};
-}
-// 同步store中的action
-const mapDispatchToProps = (dispatch) => ({
-  actions: bindActionCreators(goodsAction, dispatch),
-  dispatch: dispatch
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(List)
+export default List
