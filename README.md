@@ -1,8 +1,5 @@
 ## easyRN
 此项目为rn项目练习demo
-采用前后端JavaScript同构，
-
-前端使用react-native做c端
 
 后端使用nodejs做s端，
 
