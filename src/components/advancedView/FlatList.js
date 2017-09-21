@@ -15,20 +15,25 @@ class list extends Component {
     const {
       layout,
       onFetch,
-      item
+      item,
+      onEndReachedThreshold,
+      onViewableItemsChanged
     } = this.props
     return (
       <FlatList
+        {...this.props}
         ref={(ref) => this.listView = ref}
         keyExtractor={(item, index) => `${index} - ${item}`}
         key={layout}
-        refreshableMode="advanced"
+        refreshableMode="basic" // 可选基础或者高级 basic or advanced
         onFetch={onFetch}
         numColumns={layout === 'list' ? 1 : 3}
         item={item}
-
+        // 可见视图优化 (info)=>{}
+        onViewableItemsChanged={onViewableItemsChanged}
         // 设置第一次加载页面
         paginationFetchingView={this._renderPaginationFetchingView}
+        fetchingSpinnerSize={20}
         // 设置正在加载页面
         paginationWaitingView={this._renderPaginationWaitingView}
         //设置没有更多了页面
@@ -39,7 +44,7 @@ class list extends Component {
         waitingSpinnerText={'正在加载...'}
         waitingSpinnerSize={'small'}
         allLoadedText={'没有更多了'}
-        onEndReachedThreshold={0.0001}
+        onEndReachedThreshold={onEndReachedThreshold}
         spinnerColor={'gray'}
         // 设置下拉刷新
         refreshableTitlePull={'下拉刷新'}

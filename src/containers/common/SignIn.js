@@ -15,11 +15,9 @@ import {connect} from 'react-redux'
 
 // 引入action
 import * as userAction from '../../store/actions/user';
-
-import http from '../../utils/http'
-import Icon from 'react-native-vector-icons/FontAwesome';
 import StatusBar from '../../components/baseView/StatusBar'
 const {height, width} = Dimensions.get('window');
+const logo = require('../../image/login-logo.png')
 
 // 引入样式
 import styles from '../../styles/baseStyle'
@@ -61,7 +59,7 @@ class SignIn extends Component {
             underlayColor={'#f4f4f4'}
             onPress={() => goBack()}>
             <View>
-              <Icon
+              <FaIcon
                 name="angle-left"
                 size={24}
                 style={{
@@ -80,9 +78,7 @@ class SignIn extends Component {
           </View>
           <Image
             style={signInStyle.userImg}
-            source={{
-            uri: 'http://192.168.212.60:3333/img/12.jpg'
-          }}/>
+            source={logo}/>
           <View style={signInStyle.signInContent}>
             <View style={signInStyle.textInput}>
               <TextInput
@@ -169,13 +165,13 @@ class SignIn extends Component {
       if (!this.state.username) {
         return (<Text/>)
       }else{
-        return (<Icon name="times-circle" style={$style.textInputIcon} size={16} color="#b5b5b5"/>)
+        return (<FaIcon name="times-circle" style={$style.textInputIcon} size={16} color="#b5b5b5"/>)
       }
     } else if(key === 'password'){
       if (!this.state.password) {
         return (<Text/>)
       }else{
-        return (<Icon name="times-circle" style={$style.textInputIcon} size={16} color="#b5b5b5"/>)
+        return (<FaIcon name="times-circle" style={$style.textInputIcon} size={16} color="#b5b5b5"/>)
       }
     }
     
@@ -188,9 +184,9 @@ class SignIn extends Component {
       $style = androidStyle
     }
     if (this.state.seePassword) {
-      return (<Icon name="eye" style={$style.textInputIcon} size={14} color="#b5b5b5"/>)
+      return (<FaIcon name="eye" style={$style.textInputIcon} size={14} color="#b5b5b5"/>)
     } else {
-      return (<Icon name="eye-slash" style={$style.textInputIcon} size={14} color="#b5b5b5"/>)
+      return (<FaIcon name="eye-slash" style={$style.textInputIcon} size={14} color="#b5b5b5"/>)
     }
   }
   _seePassword() {
@@ -237,7 +233,7 @@ const signInStyle = StyleSheet.create({
   },
   textInput: {
     flexDirection: 'row',
-    borderBottomWidth: 0.5,
+    borderBottomWidth: StyleSheet.hairlineWidth,
     borderColor: '#ff5000',
     marginTop: height / 20 / 2,
     padding: 5,

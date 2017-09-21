@@ -15,7 +15,6 @@ import {connect} from 'react-redux'
 // 引入action
 import * as userAction from '../../store/actions/user';
 
-import Icon from 'react-native-vector-icons/FontAwesome';
 import StatusBar from '../../components/baseView/StatusBar'
 const {height, width} = Dimensions.get('window');
 
@@ -35,7 +34,7 @@ class SignUp extends Component {
             underlayColor={'#f4f4f4'}
             onPress={() => goBack()}>
             <View>
-              <Icon
+              <FaIcon
                 name="angle-left"
                 size={24}
                 style={{

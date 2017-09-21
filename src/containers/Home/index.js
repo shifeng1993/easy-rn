@@ -55,7 +55,7 @@ const homeStyle = StyleSheet.create({
   },
   content: {
     flex: 1,
-    borderTopWidth: 0.5,
+    borderTopWidth: StyleSheet.hairlineWidth,
     borderColor: '#d9d9d9'
   }
 });

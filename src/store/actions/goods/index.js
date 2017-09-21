@@ -1,5 +1,4 @@
 import * as types from '../../constants/actionTypes';
-import http from '../../../utils/http'
 
 /*设置常量*/
 

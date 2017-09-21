@@ -16,9 +16,10 @@ import {NavigationActions} from "react-navigation";
 // 引入action
 import * as userAction from '../../store/actions/user';
 
-import Icon from 'react-native-vector-icons/FontAwesome';
 import StatusBar from '../../components/baseView/StatusBar'
 const {height, width} = Dimensions.get('window');
+
+const logo = require('../../image/login-logo.png')
 
 // 引入样式
 import styles from '../../styles/baseStyle'
@@ -49,7 +50,7 @@ class Login extends Component {
             dispatch(goHome);
           }}>
             <View>
-              <Icon
+              <FaIcon
                 name="angle-left"
                 size={24}
                 style={{
@@ -69,9 +70,7 @@ class Login extends Component {
           </View>
           <Image
             style={loginStyle.userImg}
-            source={{
-            uri: 'https://api.shifeng1993.com/img/11.jpg'
-          }}/>
+            source={logo}/>
           <View style={loginStyle.btnContent}>
             <TouchableHighlight
               style={loginStyle.btnItem}

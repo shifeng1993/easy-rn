@@ -8,9 +8,7 @@ import {
   Platform,
   Dimensions
 } from 'react-native';
-
 const {height, width} = Dimensions.get('window');
-
 class ListItem extends Component {
   render() {
     const {item, itemHeight} = this.props
@@ -19,12 +17,13 @@ class ListItem extends Component {
         <Image
           style={{
           width: 100,
-          height: itemHeight
+          height: itemHeight,
+          backgroundColor: '#e9e9e9'
         }}
           source={{
-          uri: item.goodsImg
-        }}
-        cache={'force-cache'}/>
+          uri: item.goodsImg,
+          cache: 'force-cache'
+        }}/>
         <View
           style={{
           flex: 1,
@@ -32,7 +31,7 @@ class ListItem extends Component {
           marginLeft: 10,
           paddingTop: 5,
           paddingBottom: 5,
-          borderTopWidth: 0.5,
+          borderTopWidth: StyleSheet.hairlineWidth,
           borderColor: '#eeeeee'
         }}>
           <View style={styles.goodsName}>
@@ -68,7 +67,7 @@ class ListItem extends Component {
     if (index === 1) {
       return (
         <View style={{
-          width: 10 * str.length + 6,
+          width: 10 * str.length + 6
         }}>
           <Text style={styles.goodsAttrText}>{str}</Text>
         </View>
@@ -98,8 +97,7 @@ const styles = StyleSheet.create({
     fontSize: 12,
     lineHeight: 20
   },
-  goodsAttr: {
-  },
+  goodsAttr: {},
   goodsAttrText: {
     padding: 0,
     paddingTop: 2,

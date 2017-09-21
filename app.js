@@ -2,9 +2,14 @@ import React, {Component} from "react";
 import {Provider, connect} from "react-redux";
 import {AsyncStorage, BackHandler} from "react-native";
 import {NavigationActions, addNavigationHelpers} from "react-navigation";
+import FaIcon from 'react-native-vector-icons/FontAwesome';
+import IonIcon from 'react-native-vector-icons/Ionicons';
 import http from './src/utils/http'
+
 global.storage = AsyncStorage;
 global.http = http;
+global.IonIcon = IonIcon
+global.FaIcon = FaIcon
 
 import getStore from "./src/store";
 import AppNavigator from './src/router';
@@ -72,19 +77,8 @@ class App extends Component {
   }
 
   render() {
-    const currentScreen = this.getCurrentRouteName(this.props.nav)
     const {dispatch, nav} = this.props;
     const navigation = addNavigationHelpers({dispatch, state: nav});
-
-    if (currentScreen === 'My') {
-      storage.getItem('useruuid').then(useruuid => {
-          if (!useruuid) {
-            navigation.navigate('Login')
-          } else {
-            return
-          }
-        })
-    }
     return (<AppNavigator navigation={navigation}/>);
   }
 }

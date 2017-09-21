@@ -1,7 +1,6 @@
 import React, {Component} from 'react';
-import {Dimensions, Platform} from 'react-native';
+import {StyleSheet, Dimensions, Platform} from 'react-native';
 import {StackNavigator, TabNavigator} from 'react-navigation';
-import Icon from 'react-native-vector-icons/Ionicons';
 import CardStackStyleInterpolator from 'react-navigation/src/views/CardStack/CardStackStyleInterpolator';
 // 引入页面容器
 import {
@@ -21,21 +20,21 @@ const tabbar = TabNavigator({
     screen: Home,
     navigationOptions: {
       tabBarLabel: '主页',
-      tabBarIcon: ({tintColor}) => (<Icon name="ios-home" size={28} color={tintColor}/>)
+      tabBarIcon: ({tintColor}) => (<IonIcon name="ios-home" size={28} color={tintColor}/>)
     }
   },
   Cart: {
     screen: Cart,
     navigationOptions: {
       tabBarLabel: '购物车',
-      tabBarIcon: ({tintColor}) => (<Icon name="ios-cart" size={28} color={tintColor}/>)
+      tabBarIcon: ({tintColor}) => (<IonIcon name="ios-cart" size={28} color={tintColor}/>)
     }
   },
   My: {
     screen: My,
     navigationOptions: {
       tabBarLabel: '我的',
-      tabBarIcon: ({tintColor}) => (<Icon name="ios-person" size={28} color={tintColor}/>)
+      tabBarIcon: ({tintColor}) => (<IonIcon name="ios-person" size={28} color={tintColor}/>)
     }
   }
 }, {
@@ -50,7 +49,7 @@ const tabbar = TabNavigator({
         ? width / 8
         : width / 7 - 5,
       backgroundColor: '#fff',
-      borderTopWidth: 0.5,
+      borderTopWidth: StyleSheet.hairlineWidth,
       borderColor: '#e4e4e4'
     },
     labelStyle: {

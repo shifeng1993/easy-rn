@@ -11,7 +11,7 @@ import {
 } from 'react-native';
 import {bindActionCreators} from 'redux'
 import {connect} from 'react-redux'
-import Icon from 'react-native-vector-icons/FontAwesome';
+
 import StatusBar from '../../components/baseView/StatusBar'
 import BadgeView from '../../components/advancedView/BadgeView'
 
@@ -22,6 +22,8 @@ const {height, width} = Dimensions.get('window');
 const useruuid = '';
 const setBtnStr = '设置'
 const summary = '超级会员'
+const defaultUserImg = require('../../image/defaultUserImg.jpg')
+
 class My extends Component {
   constructor(props) {
     super(props);
@@ -29,8 +31,20 @@ class My extends Component {
       userinfo: {}
     }
   }
-  render() {
+  componentWillMount() {
+    const {actions} = this.props
     const {navigate} = this.props.navigation;
+    storage
+      .getItem('useruuid')
+      .then(useruuid => {
+        if (!useruuid) {
+          navigate('Login')
+        } else {
+          actions.getUserInfo(useruuid)
+        }
+      })
+  }
+  render() {
     return (
       <View style={styles.container}>
         <StatusBar backgroundColor={'#6d5737'} barStyle={'light-content'}/>
@@ -49,29 +63,33 @@ class My extends Component {
               style={styles.messageBtn}
               underlayColor={'rgba(0,0,0,0.0)'}
               onPress={() => alert(setBtnStr)}>
-              <Icon name="magic" size={20} style={styles.messageBtnText} color="#fff"/>
+              <FaIcon name="magic" size={20} style={styles.messageBtnText} color="#fff"/>
             </TouchableHighlight>
           </View>
           <View style={styles.user} underlayColor={'rgba(0,0,0,0.1)'}>
-            <Image
-              style={styles.userImg}
-              source={{
-              uri: 'https://api.shifeng1993.com/img/11.jpg'
-            }}/>
+            {!this.props.userinfo.userImg
+              ? <Image
+                  style={styles.userImg}
+                  source={defaultUserImg}/>
+              : <Image
+                style={styles.userImg}
+                source={{
+                uri: this.props.userinfo.userImg
+              }}/>}
             <View style={styles.userInfo}>
-              <Text style={styles.nickname}>落英花海</Text>
+              <Text style={styles.nickname}>{this.props.userinfo.nickname}</Text>
               <View style={styles.summary}>
-                <Text style={styles.summaryText}>{summary}</Text>
+                <Text style={styles.summaryText}>{this.props.userinfo.summary}</Text>
               </View>
             </View>
             <TouchableHighlight style={styles.headerRight}>
               <Text style={styles.headerRightText}>
-                <Icon name="vimeo-square" size={14} color="#fff"/>
+                <FaIcon name="vimeo-square" size={14} color="#fff"/>
                 <Text>
                   淘气值</Text>
                 <Text>
                   1060
-                </Text><Icon name="angle-right" size={14} color="#fff"/>
+                </Text><FaIcon name="angle-right" size={14} color="#fff"/>
               </Text>
             </TouchableHighlight>
           </View>
@@ -81,9 +99,7 @@ class My extends Component {
             <TouchableHighlight
               style={styles.favoriteWrapItem}
               underlayColor={'#f4f4f4'}
-              onPress={() => {
-              navigate('Login')
-            }}>
+              onPress={() => alert('收藏夹')}>
               <View>
                 <Text style={styles.favoriteWrapItemNumber}>89</Text>
                 <Text style={styles.favoriteWrapItemText}>收藏夹</Text>
@@ -126,7 +142,7 @@ class My extends Component {
                 justifyContent: 'center'
               }}>
                 <Text style={styles.seeMyOrder}>查看更多订单
-                  <Icon name="angle-right" size={14} color="#cccccc"/></Text>
+                  <FaIcon name="angle-right" size={14} color="#cccccc"/></Text>
               </View>
             </View>
           </View>
@@ -136,7 +152,7 @@ class My extends Component {
               underlayColor={'#f4f4f4'}
               onPress={() => alert('待付款')}
               renderHTML={() => <View>
-              <Text style={styles.myOrdersWrapItemIcon}><Icon name="cc-visa" size={width / 5 / 4} color="#ff6900"/></Text>
+              <Text style={styles.myOrdersWrapItemIcon}><FaIcon name="cc-visa" size={width / 5 / 4} color="#ff6900"/></Text>
               <Text style={styles.myOrdersWrapItemText}>待付款</Text>
             </View>}/>
             <BadgeView
@@ -144,7 +160,7 @@ class My extends Component {
               underlayColor={'#f4f4f4'}
               onPress={() => alert('待发货')}
               renderHTML={() => <View>
-              <Text style={styles.myOrdersWrapItemIcon}><Icon name="send" size={width / 5 / 4} color="#ff6900"/></Text>
+              <Text style={styles.myOrdersWrapItemIcon}><FaIcon name="send" size={width / 5 / 4} color="#ff6900"/></Text>
               <Text style={styles.myOrdersWrapItemText}>待发货</Text>
             </View>}/>
             <BadgeView
@@ -154,7 +170,7 @@ class My extends Component {
               badgeText={99}
               badgeColor={'#ff6700'}
               renderHTML={() => <View>
-              <Text style={styles.myOrdersWrapItemIcon}><Icon name="truck" size={width / 5 / 4} color="#ff6900"/></Text>
+              <Text style={styles.myOrdersWrapItemIcon}><FaIcon name="truck" size={width / 5 / 4} color="#ff6900"/></Text>
               <Text style={styles.myOrdersWrapItemText}>待收货</Text>
             </View>}/>
             <BadgeView
@@ -162,7 +178,7 @@ class My extends Component {
               underlayColor={'#f4f4f4'}
               onPress={() => alert('待评价')}
               renderHTML={() => <View>
-              <Text style={styles.myOrdersWrapItemIcon}><Icon name="comment" size={width / 5 / 4} color="#ff6900"/></Text>
+              <Text style={styles.myOrdersWrapItemIcon}><FaIcon name="comment" size={width / 5 / 4} color="#ff6900"/></Text>
               <Text style={styles.myOrdersWrapItemText}>待评价</Text>
             </View>}/>
             <BadgeView
@@ -170,7 +186,7 @@ class My extends Component {
               underlayColor={'#f4f4f4'}
               onPress={() => alert('退款/售后')}
               renderHTML={() => <View>
-              <Text style={styles.myOrdersWrapItemIcon}><Icon name="cny" size={width / 5 / 4} color="#ff6900"/></Text>
+              <Text style={styles.myOrdersWrapItemIcon}><FaIcon name="cny" size={width / 5 / 4} color="#ff6900"/></Text>
               <Text style={styles.myOrdersWrapItemText}>退款/售后</Text>
             </View>}/>
           </View>
@@ -250,7 +266,8 @@ const styles = StyleSheet.create({
     height: width / 6,
     marginLeft: 10,
     marginRight: 10,
-    borderRadius: width / 6 / 2
+    borderRadius: width / 6 / 2,
+    backgroundColor: '#e9e9e9'
   },
   nickname: {
     fontSize: 18,
@@ -310,7 +327,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     height: height / 8 - 40,
     flexDirection: 'row',
-    borderBottomWidth: 0.5,
+    borderBottomWidth: StyleSheet.hairlineWidth,
     borderColor: '#f4f4f4'
   },
   myOrdersTitle: {
@@ -324,11 +341,11 @@ const styles = StyleSheet.create({
     paddingRight: 10
   },
   myOrdersWrap: {
-    marginTop: 0.5,
+    marginTop: StyleSheet.hairlineWidth,
     backgroundColor: '#fff',
     height: width / 5,
     flexDirection: 'row',
-    borderBottomWidth: 0.5,
+    borderBottomWidth: StyleSheet.hairlineWidth,
     borderColor: '#f4f4f4'
   },
   myOrdersWrapItem: {
