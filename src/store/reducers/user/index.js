@@ -3,10 +3,10 @@ import userState from '../../states/user';
 
 export default function user(state = userState, action) {
     switch (action.type) {
-        case types.SET_GOODS:
+        case types.SET_USERINFO:
             return {
                 ...state,
-                goods: action.data
+                userinfo: action.data
             };
         default:
             return state;

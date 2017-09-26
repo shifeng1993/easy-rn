@@ -1,14 +1,16 @@
-import Home from './Home';
-import Cart from './Cart'
-import My from './My'
-import Login from './common/Login'
-import SignIn from './common/SignIn'
-import SignUp from './common/SignUp'
+import Home from './Main/Home';
+import Cart from './Main/Cart'
+import My from './Main/My'
+import Login from './Login'
+import SignIn from './SignIn'
+import SignUp from './SignUp'
+import UserInfo from './UserInfo'
 export {
   Home,
   Cart,
   My,
   Login,
   SignIn,
-  SignUp
+  SignUp,
+  UserInfo
 };

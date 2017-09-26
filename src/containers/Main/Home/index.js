@@ -1,12 +1,13 @@
+// 引入rn基础组件
 import React, {Component} from 'react';
 import {StyleSheet, Text, View, TextInput, Button} from 'react-native';
-import Orientation from 'react-native-orientation';
 
-import StatusBar from '../../components/baseView/StatusBar'
+// 引入封装组件
+import {StatusBar, Navigator} from '../../../components'
 import List from './List'
 
 // 引入样式
-import styles from '../../styles/baseStyle'
+import styles from '../../../styles/baseStyle'
 
 class Home extends Component {
   constructor(props) {
@@ -15,36 +16,31 @@ class Home extends Component {
       serachText: null
     }
   }
-  componentWillMount() {
-    // 禁止横屏
-    Orientation.lockToPortrait();
-  }
   render() {
     return (
       <View style={styles.container}>
         <StatusBar backgroundColor={"#cf4218"} barStyle={"light-content"}/>
-        <View style={homeStyle.header}>
-          <TextInput
-            style={[styles.textInput, homeStyle.serachText]}
-            underlineColorAndroid="transparent"
-            maxLength={40}
-            autoFocus={false}
-            onChangeText={(serachText) => this.setState({serachText})}
-            value={this.state.serachText}/>
-        </View>
+        <Navigator backgroundColor={'#ff5700'} renderMiddle={this._NavigatorMiddle}/>
         <View style={homeStyle.content}>
           <List/>
         </View>
       </View>
     )
   }
+  _NavigatorMiddle = () => {
+    return (<TextInput
+      style={[styles.textInput, homeStyle.serachText]}
+      underlineColorAndroid="transparent"
+      maxLength={40}
+      autoFocus={false}
+      onChangeText={(serachText) => this.setState({serachText})}
+      value={this.state.serachText}/>)
+  }
 }
 
 const homeStyle = StyleSheet.create({
   header: {
-    padding: 10,
-    backgroundColor: '#ff5700',
-    marginBottom: 5
+    backgroundColor: '#ff5700'
   },
   serachText: {
     borderBottomWidth: 1,

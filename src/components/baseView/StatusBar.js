@@ -10,7 +10,7 @@ class Status extends Component {
     const {backgroundColor, barStyle} = this.props
     if (Platform.OS === 'ios') {
       return (
-        <View style = {{ height: 20,backgroundColor: backgroundColor}}>
+        <View style = {{ height: isIphoneX ? 40 : 20,backgroundColor: backgroundColor}}>
           <StatusBar barStyle={barStyle}/ >
         </View>
       )

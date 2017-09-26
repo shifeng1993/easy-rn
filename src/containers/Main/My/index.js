@@ -9,20 +9,21 @@ import {
   Button,
   Dimensions
 } from 'react-native';
+import {NavigationActions} from "react-navigation";
 import {bindActionCreators} from 'redux'
 import {connect} from 'react-redux'
 
-import StatusBar from '../../components/baseView/StatusBar'
-import BadgeView from '../../components/advancedView/BadgeView'
+// 引入封装组件
+import {StatusBar, BadgeView, Navigator} from '../../../components'
 
 // 引入action
-import * as userAction from '../../store/actions/user';
+import * as userAction from '../../../store/actions/user';
 
 const {height, width} = Dimensions.get('window');
 const useruuid = '';
 const setBtnStr = '设置'
 const summary = '超级会员'
-const defaultUserImg = require('../../image/defaultUserImg.jpg')
+const defaultUserImg = require('../../../image/defaultUserImg1.jpg')
 
 class My extends Component {
   constructor(props) {
@@ -31,7 +32,7 @@ class My extends Component {
       userinfo: {}
     }
   }
-  componentWillMount() {
+  componentDidMount() {
     const {actions} = this.props
     const {navigate} = this.props.navigation;
     storage
@@ -45,44 +46,44 @@ class My extends Component {
       })
   }
   render() {
+    const {navigate, goBack, dispatch, state} = this.props.navigation;
     return (
       <View style={styles.container}>
         <StatusBar backgroundColor={'#6d5737'} barStyle={'light-content'}/>
         <View style={styles.header}>
-          <View style={styles.headerBtn}>
+          <Navigator
+            backgroundColor={'rgba(0,0,0,0)'}
+            renderLeft={this._headerLeft}
+            renderRight={this._headerRight}/>
+          <View style={styles.user}>
             <TouchableHighlight
-              style={styles.setBtn}
-              underlayColor={'rgba(0,0,0,0.1)'}
-              onPress={() => alert(setBtnStr)}>
-              <Text style={styles.setBtnText}>{setBtnStr}</Text>
-            </TouchableHighlight>
-            <TouchableHighlight style={{
-              flex: 8
-            }}><View/></TouchableHighlight>
-            <TouchableHighlight
-              style={styles.messageBtn}
-              underlayColor={'rgba(0,0,0,0.0)'}
-              onPress={() => alert(setBtnStr)}>
-              <FaIcon name="magic" size={20} style={styles.messageBtnText} color="#fff"/>
-            </TouchableHighlight>
-          </View>
-          <View style={styles.user} underlayColor={'rgba(0,0,0,0.1)'}>
-            {!this.props.userinfo.userImg
-              ? <Image
+              underlayColor={'rgba(0,0,0,0)'}
+              onPress={() => navigate('UserInfo')}>
+              {!this.props.userinfo.userImg
+                ? <Image style={styles.userImg} source={defaultUserImg}/>
+                : <Image
                   style={styles.userImg}
-                  source={defaultUserImg}/>
-              : <Image
-                style={styles.userImg}
-                source={{
-                uri: this.props.userinfo.userImg
-              }}/>}
-            <View style={styles.userInfo}>
-              <Text style={styles.nickname}>{this.props.userinfo.nickname}</Text>
-              <View style={styles.summary}>
-                <Text style={styles.summaryText}>{this.props.userinfo.summary}</Text>
+                  source={{
+                  uri: this.props.userinfo.userImg,
+                  cache: 'force-cache'
+                }}/>}
+            </TouchableHighlight>
+            <TouchableHighlight
+              underlayColor={'rgba(0,0,0,0)'}
+              onPress={() => navigate('UserInfo')}>
+              <View style={styles.userInfo}>
+                <Text style={styles.nickname}>{this.props.userinfo.nickname}</Text>
+                <View style={styles.summary}>
+                  <Text style={styles.summaryText}>{this.props.userinfo.summary}</Text>
+                </View>
               </View>
-            </View>
-            <TouchableHighlight style={styles.headerRight}>
+            </TouchableHighlight>
+            <TouchableHighlight
+              style={styles.headerRight}
+              underlayColor={'rgba(0,0,0,0.1)'}
+              onPress={() => {
+              alert('1')
+            }}>
               <Text style={styles.headerRightText}>
                 <FaIcon name="vimeo-square" size={14} color="#fff"/>
                 <Text>
@@ -194,6 +195,32 @@ class My extends Component {
       </View>
     )
   }
+  _headerLeft = () => {
+    const {navigate, goBack, dispatch, state} = this.props.navigation;
+    const goHome = NavigationActions.reset({
+      index: 0,
+      actions: [NavigationActions.navigate({routeName: 'Main'})]
+    })
+    return (
+      <Text
+        style={styles.setBtnText}
+        onPress={() => {
+        storage.removeItem('useruuid');
+        dispatch(goHome);
+      }}>{setBtnStr}</Text>
+    )
+  }
+  _headerRight = () => {
+    return (
+    <FaIcon
+      name="magic"
+      size={20}
+      style={styles.messageBtnText}
+      color="#fff"
+      onPress={() => alert(setBtnStr)}/>
+    )
+  }
+
 }
 
 // 同步store中的state，状态改变，实时更新
@@ -224,13 +251,12 @@ const styles = StyleSheet.create({
     paddingRight: 0,
     paddingBottom: 0,
     flex: 1,
-    flexDirection: 'row'
+    flexDirection: 'row',
+    position: 'relative'
   },
   setBtn: {
     flex: 1,
-    padding: 5,
-    paddingLeft: 6,
-    paddingRight: 6,
+    width: 34,
     borderRadius: 5
   },
   setBtnText: {
@@ -240,13 +266,11 @@ const styles = StyleSheet.create({
   },
   messageBtn: {
     flex: 1,
-    padding: 5,
-    paddingLeft: 6,
-    paddingRight: 6,
+    width: 34,
     borderRadius: 5
   },
   messageBtnText: {
-    textAlign: 'center'
+    textAlign: 'right'
   },
   user: {
     flex: 2,
@@ -254,20 +278,18 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-start',
     paddingLeft: 10,
     paddingRight: 0,
-    paddingTop: 30,
-    paddingBottom: 30
+    position: 'relative'
   },
   userInfo: {
     flex: 1,
-    justifyContent: 'center'
+    marginTop: 10
   },
   userImg: {
     width: width / 6,
     height: width / 6,
     marginLeft: 10,
     marginRight: 10,
-    borderRadius: width / 6 / 2,
-    backgroundColor: '#e9e9e9'
+    borderRadius: width / 6 / 2
   },
   nickname: {
     fontSize: 18,
@@ -288,10 +310,10 @@ const styles = StyleSheet.create({
     textAlign: 'center'
   },
   headerRight: {
-    justifyContent: 'center',
+    position: 'absolute',
+    top: 30,
+    right: -5,
     backgroundColor: 'rgba(255,255,255, 0.2)',
-    marginTop: 20,
-    marginBottom: 20,
     paddingRight: 8,
     paddingLeft: 10,
     borderRadius: 12

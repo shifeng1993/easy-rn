@@ -34,8 +34,8 @@ class SignUp extends Component {
             underlayColor={'#f4f4f4'}
             onPress={() => goBack()}>
             <View>
-              <FaIcon
-                name="angle-left"
+              <MCIcon
+                name="arrow-left"
                 size={24}
                 style={{
                 textAlign: 'center'

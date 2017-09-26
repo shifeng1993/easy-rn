@@ -1,7 +1,9 @@
 import React, {Component} from 'react';
 import {StyleSheet, Dimensions, Platform} from 'react-native';
 import {StackNavigator, TabNavigator} from 'react-navigation';
-import CardStackStyleInterpolator from 'react-navigation/src/views/CardStack/CardStackStyleInterpolator';
+import Orientation from 'react-native-orientation';
+
+import CardStackStyleInterpolator from 'react-navigation/src/views/CardStackStyleInterpolator';
 // 引入页面容器
 import {
   Home,
@@ -9,12 +11,21 @@ import {
   My,
   Login,
   SignIn,
-  SignUp
+  SignUp,
+  UserInfo
 } from '../containers';
 
 // 设置常量
 const {height, width} = Dimensions.get('window');
-
+const isIphoneX = () => {
+  const {height, width} = Dimensions.get('window');
+  let iphoneXAspect = parseFloat((height / width).toString().substring(0, 5))
+  if (Platform.OS === 'ios' && iphoneXAspect === 2.165) {
+    return true
+  } else {
+    return false
+  }
+}
 const tabbar = TabNavigator({
   Home: {
     screen: Home,
@@ -46,17 +57,36 @@ const tabbar = TabNavigator({
   tabBarOptions: {
     style: {
       height: (Platform.OS === 'ios')
-        ? width / 8
-        : width / 7 - 5,
+        ? ((Orientation.getInitialOrientation() === 'PORTRAIT')
+          ? (width / 8)
+          : (((Orientation.getInitialOrientation() === 'PORTRAITUPSIDEDOWN')
+            ? (width / 8)
+            : (height / 8))))
+        : ((Orientation.getInitialOrientation() === 'PORTRAIT')
+          ? (width / 7 - 5)
+          : (((Orientation.getInitialOrientation() === 'PORTRAITUPSIDEDOWN')
+            ? (width / 7 - 5)
+            : (height / 7 - 5)))),
       backgroundColor: '#fff',
       borderTopWidth: StyleSheet.hairlineWidth,
-      borderColor: '#e4e4e4'
+      borderColor: '#e4e4e4',
+      marginBottom: isIphoneX()
+        ? 25
+        : 0
     },
     labelStyle: {
-      fontSize: width / 35
+      fontSize: (Orientation.getInitialOrientation() === 'PORTRAIT')
+        ? (width / 35)
+        : (((Orientation.getInitialOrientation() === 'PORTRAITUPSIDEDOWN')
+          ? (width / 35)
+          : (height / 35)))
     },
     iconStyle: {
-      height: width / 20
+      height: (Orientation.getInitialOrientation() === 'PORTRAIT')
+        ? (width / 20)
+        : (((Orientation.getInitialOrientation() === 'PORTRAITUPSIDEDOWN')
+          ? (width / 20)
+          : (height / 20)))
     },
     indicatorStyle: {
       height: 0
@@ -96,11 +126,18 @@ const AppNavigator = StackNavigator({
     navigationOptions: {
       header: null
     }
+  },
+  UserInfo: {
+    screen: UserInfo,
+    navigationOptions: {
+      header: null
+    }
   }
 }, {
   initialRouteName: 'Main',
   transitionConfig: () => ({screenInterpolator: CardStackStyleInterpolator.forHorizontal}),
-  // onTransitionStart: () => ({screenInterpolator: CardStackStyleInterpolator.forHorizontal}),
+  // onTransitionStart: () => ({screenInterpolator:
+  // CardStackStyleInterpolator.forHorizontal}),
   onTransitionEnd: () => ({screenInterpolator: CardStackStyleInterpolator.forInitial})
 });
 

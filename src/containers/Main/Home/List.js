@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {StyleSheet, Text, View, Platform, Dimensions} from 'react-native';
-import FlatList from "../../components/advancedView/FlatList";
+import FlatList from "../../../components/advancedView/FlatList";
 import ListItem from './ListItem.js'
 
 // 常量设置

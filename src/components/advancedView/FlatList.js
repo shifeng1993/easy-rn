@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {StyleSheet, View, Text, Platform, Dimensions, ActivityIndicator} from 'react-native';
 import FlatList from "react-native-ultimate-listview";
-import LoadingSpinner from "../baseView/LoadingSpinner";
+import {LoadingSpinner} from "../index";
 
 // 常量设置
 const {width, height} = Dimensions.get('window');

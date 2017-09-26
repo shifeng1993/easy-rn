@@ -15,22 +15,22 @@ const baseStyle = StyleSheet.create({
   content: {
     flex: 1,
     alignItems: 'center',
-    backgroundColor: '#fff',
     position: 'relative'
   },
-  headerLeft: {
-    position: 'absolute',
-    left: 0,
+  navigator: {
     padding: 10,
-    paddingLeft: 20,
-    paddingRight: 20
+    alignItems: 'center',
+    position: 'relative'
   },
-  headerRight: {
-    position: 'absolute',
-    right: 0,
-    padding: 10,
-    paddingLeft: 20,
-    paddingRight: 20
+  navigatorLeft: {
+    flex: 1,
+    width: 34,
+    borderRadius: 5
+  },
+  navigatorRight: {
+    flex: 1,
+    width: 34,
+    borderRadius: 5
   },
   textInput: {
     padding: 0

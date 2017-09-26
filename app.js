@@ -1,19 +1,37 @@
 import React, {Component} from "react";
 import {Provider, connect} from "react-redux";
-import {AsyncStorage, BackHandler} from "react-native";
+import {AsyncStorage, BackHandler, Platform, Dimensions} from "react-native";
 import {NavigationActions, addNavigationHelpers} from "react-navigation";
+import Orientation from 'react-native-orientation';
 import FaIcon from 'react-native-vector-icons/FontAwesome';
 import IonIcon from 'react-native-vector-icons/Ionicons';
+import MCIcon from 'react-native-vector-icons/MaterialCommunityIcons'
 import http from './src/utils/http'
+import getStore from "./src/store";
+import AppNavigator from './src/router';
 
+
+// 识别iphonex
+const isIphoneX = () => {
+  const {height, width} = Dimensions.get('window');
+  let iphoneX = parseFloat((width/height).toString().substring(0,5));
+  let iphoneY = parseFloat((height/width).toString().substring(0,5));
+  if(Platform.OS === 'ios' && iphoneX === 2.165 || Platform.OS === 'ios' &&  iphoneY === 2.165) {
+    return true
+  } else {
+    return false
+  }
+}
+
+// 全局定义
+global.isIphoneX = isIphoneX()
 global.storage = AsyncStorage;
 global.http = http;
 global.IonIcon = IonIcon
 global.FaIcon = FaIcon
+global.MCIcon = MCIcon
 
-import getStore from "./src/store";
-import AppNavigator from './src/router';
-
+// 以下是同步路由状态到redux函数
 const navReducer = (state, action) => {
   const newState = AppNavigator
     .router
@@ -21,16 +39,15 @@ const navReducer = (state, action) => {
   return newState || state;
 };
 
-const mapStateToProps = (state) => ({nav: state.nav});
-
 class App extends Component {
-  /*处理安卓硬件返回按键 开始*/
   componentWillMount() {
-    let useruuid =  '';
+    // 禁止横屏
+    Orientation.lockToPortrait();
     storage.getItem('useruuid').then(useruuid => {
       this.setState((prevState, props) => ({useruuid: useruuid}))
     })
   }
+  /*处理安卓硬件返回按键 开始*/
   componentDidMount() {
     BackHandler.addEventListener("hardwareBackPress", this.onBackPress);
   }
@@ -83,7 +100,8 @@ class App extends Component {
   }
 }
 
-const AppWithNavigationState = connect(mapStateToProps)(App);
+// 根组件连接状态
+const AppWithNavigationState = connect((state) => ({nav: state.nav}))(App);
 
 const store = getStore(navReducer);
 
