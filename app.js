@@ -5,11 +5,19 @@ import {NavigationActions, addNavigationHelpers} from "react-navigation";
 import Orientation from 'react-native-orientation';
 import FaIcon from 'react-native-vector-icons/FontAwesome';
 import IonIcon from 'react-native-vector-icons/Ionicons';
-import MCIcon from 'react-native-vector-icons/MaterialCommunityIcons'
-import http from './src/utils/http'
+import MCIcon from 'react-native-vector-icons/MaterialCommunityIcons';
+import Toast from 'react-native-easy-toast';
+import Modal from 'react-native-modal';
+import http from './src/utils/http';
 import getStore from "./src/store";
 import AppNavigator from './src/router';
 
+// 全局组件
+global.IonIcon = IonIcon
+global.FaIcon = FaIcon
+global.MCIcon = MCIcon
+global.Toast = Toast
+global.Modal = Modal
 
 // 识别iphonex
 const isIphoneX = () => {
@@ -27,9 +35,7 @@ const isIphoneX = () => {
 global.isIphoneX = isIphoneX()
 global.storage = AsyncStorage;
 global.http = http;
-global.IonIcon = IonIcon
-global.FaIcon = FaIcon
-global.MCIcon = MCIcon
+
 
 // 以下是同步路由状态到redux函数
 const navReducer = (state, action) => {
@@ -69,7 +75,7 @@ class App extends Component {
       return false;
     }
     if (currentScreen === 'Login') {
-      if (!this.useruuid) {
+      if (!this.state.useruuid) {
         dispatch(goHome);
       } else {
         dispatch(NavigationActions.back());
@@ -96,6 +102,7 @@ class App extends Component {
   render() {
     const {dispatch, nav} = this.props;
     const navigation = addNavigationHelpers({dispatch, state: nav});
+    global.navigation = navigation
     return (<AppNavigator navigation={navigation}/>);
   }
 }

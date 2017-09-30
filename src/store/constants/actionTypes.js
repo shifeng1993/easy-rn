@@ -10,4 +10,8 @@ export const GET_GOODSLIST = 'GET_GOODSLIST';
 export const SET_GOODS = 'SET_GOODS';
 export const GET_GOODS = 'GET_GOODS';
 
+// 设置用户uuid
+export const SET_USERUUID = 'SET_USERUUID'
 
+// 设置用户是否刷新了nickname
+export const SET_NICKNAME = 'SET_NICKNAME'

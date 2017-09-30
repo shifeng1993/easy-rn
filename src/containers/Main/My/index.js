@@ -32,21 +32,13 @@ class My extends Component {
       userinfo: {}
     }
   }
-  componentDidMount() {
+  componentWillMount() {
     const {actions} = this.props
-    const {navigate} = this.props.navigation;
-    storage
-      .getItem('useruuid')
-      .then(useruuid => {
-        if (!useruuid) {
-          navigate('Login')
-        } else {
-          actions.getUserInfo(useruuid)
-        }
-      })
+    storage.getItem('useruuid').then(useruuid => {
+      actions.getUserInfo(useruuid)
+    })
   }
   render() {
-    const {navigate, goBack, dispatch, state} = this.props.navigation;
     return (
       <View style={styles.container}>
         <StatusBar backgroundColor={'#6d5737'} barStyle={'light-content'}/>
@@ -58,7 +50,7 @@ class My extends Component {
           <View style={styles.user}>
             <TouchableHighlight
               underlayColor={'rgba(0,0,0,0)'}
-              onPress={() => navigate('UserInfo')}>
+              onPress={() => navigation.navigate('UserInfo')}>
               {!this.props.userinfo.userImg
                 ? <Image style={styles.userImg} source={defaultUserImg}/>
                 : <Image
@@ -70,7 +62,7 @@ class My extends Component {
             </TouchableHighlight>
             <TouchableHighlight
               underlayColor={'rgba(0,0,0,0)'}
-              onPress={() => navigate('UserInfo')}>
+              onPress={() => navigation.navigate('UserInfo')}>
               <View style={styles.userInfo}>
                 <Text style={styles.nickname}>{this.props.userinfo.nickname}</Text>
                 <View style={styles.summary}>
@@ -196,7 +188,6 @@ class My extends Component {
     )
   }
   _headerLeft = () => {
-    const {navigate, goBack, dispatch, state} = this.props.navigation;
     const goHome = NavigationActions.reset({
       index: 0,
       actions: [NavigationActions.navigate({routeName: 'Main'})]
@@ -206,7 +197,7 @@ class My extends Component {
         style={styles.setBtnText}
         onPress={() => {
         storage.removeItem('useruuid');
-        dispatch(goHome);
+        navigation.dispatch(goHome);
       }}>{setBtnStr}</Text>
     )
   }

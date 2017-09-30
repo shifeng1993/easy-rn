@@ -60,4 +60,17 @@ export default class http {
       return error
     }
   }
+  static async upload(url, formdata) {
+    const config = {
+      headers:{
+        'Content-Type':'multipart/form-data',
+      } 
+    }
+    try {
+      let res = await axios.post(url, formdata, config)
+      return res
+    } catch (error) {
+      return error
+    }
+  }
 }

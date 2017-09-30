@@ -5,6 +5,7 @@ import Login from './Login'
 import SignIn from './SignIn'
 import SignUp from './SignUp'
 import UserInfo from './UserInfo'
+import EditNickName from './UserInfo/EditNickName'
 export {
   Home,
   Cart,
@@ -12,5 +13,6 @@ export {
   Login,
   SignIn,
   SignUp,
-  UserInfo
+  UserInfo,
+  EditNickName
 };

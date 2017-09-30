@@ -8,6 +8,16 @@ export default function user(state = userState, action) {
                 ...state,
                 userinfo: action.data
             };
+        case types.SET_USERUUID:
+            return {
+                ...state,
+                useruuid: action.data
+            };
+        case types.SET_NICKNAME:
+            return {
+                ...state,
+                isNickname: action.data
+            };
         default:
             return state;
     }

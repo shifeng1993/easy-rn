@@ -199,7 +199,6 @@ class SignIn extends Component {
           color="#b5b5b5"/>)
       }
     }
-
   }
   _returnSeeIcon() {
     let $style;

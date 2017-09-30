@@ -7,6 +7,7 @@ import {
   Button,
   Image,
   TouchableHighlight,
+  TouchableOpacity,
   Dimensions,
   Platform
 } from 'react-native';
@@ -47,7 +48,8 @@ class UserInfo extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      avatarSource: null
+      useruuid: null,
+      isModalVisible: false
     }
   }
   componentDidMount() {
@@ -59,9 +61,17 @@ class UserInfo extends Component {
         if (!useruuid) {
           navigate('Login')
         } else {
+          this.setState({useruuid})
           actions.getUserInfo(useruuid)
         }
       })
+  }
+  componentWillUpdate() {
+    const {actions} = this.props
+    if (this.props.isNickname) {
+      this.toastShow('昵称修改成功');
+      actions.setNickName(false)
+    }
   }
   render() {
     return (
@@ -85,13 +95,13 @@ class UserInfo extends Component {
             <View style={userInfoStyle.userItemContent}>
               <Text style={userInfoStyle.userItemLeft}>淘宝头像</Text>
               {!this.props.userinfo.userImg
-                  ? <Image style={userInfoStyle.userImgImg} source={defaultUserImg}/>
-                  : <Image
-                    style={userInfoStyle.userImgImg}
-                    source={{
-                    uri: this.props.userinfo.userImg,
-                    cache: 'force-cache'
-                  }}/>}
+                ? <Image style={userInfoStyle.userImgImg} source={defaultUserImg}/>
+                : <Image
+                  style={userInfoStyle.userImgImg}
+                  source={{
+                  uri: this.props.userinfo.userImg,
+                  cache: 'force-cache'
+                }}/>}
               <FaIcon
                 name="angle-right"
                 style={userInfoStyle.userItemRightIcon}
@@ -107,7 +117,13 @@ class UserInfo extends Component {
           </TouchableHighlight>
           <TouchableHighlight
             style={[userInfoStyle.userItem, userInfoStyle.nickname]}
-            underlayColor={'rgba(0,0,0,0)'}>
+            underlayColor={'rgba(0,0,0,0)'}
+            onPress={() => {
+            navigation.navigate('EditNickName', {
+              nickname: this.props.userinfo.nickname,
+              useruuid: this.state.useruuid
+            })
+          }}>
             <View style={userInfoStyle.userItemContent}>
               <Text style={userInfoStyle.userItemLeft}>淘宝昵称</Text>
               <Text style={userInfoStyle.userItemRight}>{this.props.userinfo.nickname}</Text>
@@ -120,7 +136,8 @@ class UserInfo extends Component {
           </TouchableHighlight>
           <TouchableHighlight
             style={[userInfoStyle.userItem, userInfoStyle.gender]}
-            underlayColor={'rgba(0,0,0,0)'}>
+            underlayColor={'rgba(0,0,0,0)'}
+            onPress={this._showModal}>
             <View style={userInfoStyle.userItemContent}>
               <Text style={userInfoStyle.userItemLeft}>性别</Text>
               <Text style={userInfoStyle.userItemRight}>{this.props.userinfo.gender}</Text>
@@ -132,12 +149,65 @@ class UserInfo extends Component {
             </View>
           </TouchableHighlight>
         </View>
+        <Toast ref="toast"/>
+        <Modal
+          backdropColor={'black'}
+          backdropOpacity={0.5}
+          onBackButtonPress={this._hideModal}
+          onBackdropPress={this._hideModal}
+          animationIn={'fadeIn'}
+          animationOut={'fadeOut'}
+          isVisible={this.state.isModalVisible}>
+          <View style={userInfoStyle.genderModal}>
+            <View
+              style={[
+              userInfoStyle.genderModalItems, {
+                borderBottomWidth: 2
+              }
+            ]}>
+              <Text style={userInfoStyle.genderModalItemsText}>修改性别</Text>
+            </View>
+            <View
+              style={[
+              userInfoStyle.genderModalItems, {
+                borderBottomWidth: StyleSheet.hairlineWidth
+              }
+            ]}>
+              <Text
+                style={userInfoStyle.genderModalItemsText}
+                onPress={()=>{
+                  this._seleteGender('男')
+                }}>男</Text>
+            </View>
+            <View style={[userInfoStyle.genderModalItems]}>
+              <Text
+                style={userInfoStyle.genderModalItemsText}
+                onPress={()=>{
+                  this._seleteGender('女')
+                }}>女</Text>
+            </View>
+          </View>
+        </Modal>
       </View>
     )
   }
+  _showModal = () => this.setState({isModalVisible: true})
+
+  _hideModal = () => this.setState({isModalVisible: false})
+
+  _upload = async(source) => {
+    let formData = new FormData();
+    let file = {
+      uri: source.uri,
+      type: 'multipart/form-data',
+      name: 'image.png'
+    };
+    formData.append('files', file)
+    let res = await http.upload('/upload', formData)
+    return res.data.imgUrl
+  }
   _imagePicker = () => {
-    ImagePicker.showImagePicker(options, (res) => {
-      console.log(res)
+    ImagePicker.showImagePicker(options, async(res) => {
       if (res.didCancel) { // 返回
         return
       } else {
@@ -157,10 +227,36 @@ class UserInfo extends Component {
               .replace('file://', '')
           };
         }
+        const imgUrl = await this._upload(source)
+        const params = {
+          userImg: imgUrl
+        }
+        this
+          .props
+          .actions
+          .patchUserInfo(this.state.useruuid, params)
 
-        this.setState({avatarSource: source});
+        // 修改完成提示
+        this.toastShow('头像编辑成功')
       }
     })
+  }
+  toastShow = (message) => {
+    this
+      .refs
+      .toast
+      .show(message, 2000);
+  }
+  _seleteGender = (gender) => {
+    const params = {
+      gender: gender
+    }
+    this
+      .props
+      .actions
+      .patchUserInfo(this.state.useruuid, params)
+    this._hideModal()
+    this.toastShow('性别设置成功')
   }
   _navigatorLeft = () => {
     return (<MCIcon
@@ -212,16 +308,20 @@ const userInfoStyle = StyleSheet.create({
     fontSize: 16,
     color: '#3d4245',
     textAlign: 'left',
-    lineHeight: (Platform.OS === 'ios') ? 24 : 16
+    lineHeight: (Platform.OS === 'ios')
+      ? 24
+      : 16
   },
   userItemRight: {
     flex: 1,
     fontSize: 14,
     color: '#aaaaaa',
     textAlign: 'right',
-    lineHeight: (Platform.OS === 'ios') ? 24 : 16
+    lineHeight: (Platform.OS === 'ios')
+      ? 24
+      : 16
   },
-  userItemRightIcon:{
+  userItemRightIcon: {
     marginLeft: 10
   },
   userImgImg: {
@@ -232,12 +332,35 @@ const userInfoStyle = StyleSheet.create({
   },
   gender: {
     marginTop: 10
+  },
+  genderModal: {
+    height: width / 3,
+    backgroundColor: '#fff',
+    borderRadius: 5,
+    justifyContent: 'center',
+    shadowColor: '#000',
+    shadowOpacity: 0.2,
+    shadowOffset: {
+      width: 0,
+      height: 0
+    }
+  },
+  genderModalItems: {
+    flex: 1,
+    flexDirection: 'row',
+    alignItems: 'center',
+    borderColor: '#dddddd',
+    paddingLeft: 20
+  },
+  genderModalItemsText: {
+    flex: 1,
+    fontSize: 16
   }
 })
 
 // 同步store中的state，状态改变，实时更新
 const mapStateToProps = state => {
-  return {userinfo: state.user.userinfo};
+  return {userinfo: state.user.userinfo, isNickname: state.user.isNickname};
 }
 // 同步store中的action
 const mapDispatchToProps = (dispatch) => ({

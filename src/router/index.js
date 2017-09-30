@@ -1,9 +1,9 @@
 import React, {Component} from 'react';
 import {StyleSheet, Dimensions, Platform} from 'react-native';
-import {StackNavigator, TabNavigator} from 'react-navigation';
+import {StackNavigator, TabNavigator, NavigationActions} from 'react-navigation';
 import Orientation from 'react-native-orientation';
 
-import CardStackStyleInterpolator from 'react-navigation/src/views/CardStackStyleInterpolator';
+import CardStackStyleInterpolator from 'react-navigation/src/views/CardStack/CardStackStyleInterpolator';
 // 引入页面容器
 import {
   Home,
@@ -12,7 +12,8 @@ import {
   Login,
   SignIn,
   SignUp,
-  UserInfo
+  UserInfo,
+  EditNickName
 } from '../containers';
 
 // 设置常量
@@ -31,21 +32,48 @@ const tabbar = TabNavigator({
     screen: Home,
     navigationOptions: {
       tabBarLabel: '主页',
-      tabBarIcon: ({tintColor}) => (<IonIcon name="ios-home" size={28} color={tintColor}/>)
+      tabBarIcon: ({tintColor}) => (<IonIcon name="ios-home" size={28} color={tintColor}/>),
+      tabBarOnPress: (({
+        route,
+        index
+      }, jumpToIndex) => {
+        jumpToIndex(index);
+      })
     }
   },
   Cart: {
     screen: Cart,
     navigationOptions: {
       tabBarLabel: '购物车',
-      tabBarIcon: ({tintColor}) => (<IonIcon name="ios-cart" size={28} color={tintColor}/>)
+      tabBarIcon: ({tintColor}) => (<IonIcon name="ios-cart" size={28} color={tintColor}/>),
+      tabBarOnPress: (({
+        route,
+        index
+      }, jumpToIndex) => {
+        jumpToIndex(index);
+      })
     }
   },
   My: {
     screen: My,
     navigationOptions: {
       tabBarLabel: '我的',
-      tabBarIcon: ({tintColor}) => (<IonIcon name="ios-person" size={28} color={tintColor}/>)
+      tabBarIcon: ({tintColor}) => (<IonIcon name="ios-person" size={28} color={tintColor}/>),
+      tabBarOnPress: (({
+        route,
+        index
+      }, jumpToIndex) => {
+        jumpToIndex(index);
+        storage
+          .getItem('useruuid')
+          .then(useruuid => {
+            if (!useruuid) {
+              navigation.navigate('Login')
+            } else {
+              jumpToIndex(index);
+            }
+          })
+      })
     }
   }
 }, {
@@ -129,6 +157,12 @@ const AppNavigator = StackNavigator({
   },
   UserInfo: {
     screen: UserInfo,
+    navigationOptions: {
+      header: null
+    }
+  },
+  EditNickName: {
+    screen: EditNickName,
     navigationOptions: {
       header: null
     }
