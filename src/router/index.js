@@ -13,7 +13,8 @@ import {
   SignIn,
   SignUp,
   UserInfo,
-  EditNickName
+  EditNickName,
+  GoodsDetails
 } from '../containers';
 
 // 设置常量
@@ -163,6 +164,12 @@ const AppNavigator = StackNavigator({
   },
   EditNickName: {
     screen: EditNickName,
+    navigationOptions: {
+      header: null
+    }
+  },
+  GoodsDetails: {
+    screen: GoodsDetails,
     navigationOptions: {
       header: null
     }

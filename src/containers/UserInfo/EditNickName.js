@@ -11,14 +11,15 @@ import {
   Platform
 } from 'react-native';
 
+// redux
 import {bindActionCreators} from 'redux'
 import {connect} from 'react-redux'
 
-// 引入封装组件
-import {StatusBar, Navigator} from '../../components'
-
 // 引入action
 import * as userAction from '../../store/actions/user';
+
+// 引入封装组件
+import {StatusBar, Navigator} from '../../components'
 
 // 引入样式
 import styles from '../../styles/baseStyle'

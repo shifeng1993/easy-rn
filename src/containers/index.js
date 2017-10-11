@@ -6,6 +6,8 @@ import SignIn from './SignIn'
 import SignUp from './SignUp'
 import UserInfo from './UserInfo'
 import EditNickName from './UserInfo/EditNickName'
+import GoodsDetails from './Main/Home/GoodsDetails'
+
 export {
   Home,
   Cart,
@@ -14,5 +16,6 @@ export {
   SignIn,
   SignUp,
   UserInfo,
-  EditNickName
+  EditNickName,
+  GoodsDetails
 };
