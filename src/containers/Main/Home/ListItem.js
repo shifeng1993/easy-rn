@@ -6,52 +6,58 @@ import {
   Button,
   Image,
   Platform,
-  Dimensions
+  Dimensions,
+  TouchableHighlight
 } from 'react-native';
+
 const {height, width} = Dimensions.get('window');
 class ListItem extends Component {
   render() {
-    const {item, itemHeight} = this.props
+    const {item, itemHeight} = this.props;
     return (
-      <View style={styles.rowItem}>
-        <Image
-          style={{
-          width: 100,
-          height: itemHeight,
-          backgroundColor: '#e9e9e9'
-        }}
-          source={{
-          uri: item.goodsImg,
-          cache: 'force-cache'
-        }}/>
-        <View
-          style={{
-          flex: 1,
-          height: itemHeight,
-          marginLeft: 10,
-          paddingTop: 5,
-          paddingBottom: 5,
-          borderTopWidth: StyleSheet.hairlineWidth,
-          borderColor: '#eeeeee'
-        }}>
-          <View style={styles.goodsName}>
-            <Text style={styles.goodsNameText} numberOfLines={2}>{item.goodsName}</Text>
-          </View>
-          <View style={styles.supplierNickName}>
-            <Text style={styles.supplierNickNameText}>{item.supplier.nickname}</Text>
-          </View>
-          <View style={styles.goodsAttr}>
-            {this._returnAttr('包邮', 1)}
-          </View>
-          <View style={styles.goodsPrice}>
-            <Text style={styles.goodsPriceText}>
-              ￥<Text style={{
+      <TouchableHighlight
+        underlayColor={'rgba(0,0,0,0)'}
+        onPress={() => navigation.navigate('GoodsDetails', {goodsId: item._id})}>
+        <View style={styles.rowItem}>
+          <Image
+            style={{
+            width: 100,
+            height: itemHeight,
+            backgroundColor: '#e9e9e9'
+          }}
+            source={{
+            uri: item.goodsImg,
+            cache: 'force-cache'
+          }}/>
+          <View
+            style={{
+            flex: 1,
+            height: itemHeight,
+            marginLeft: 10,
+            paddingTop: 5,
+            paddingBottom: 5,
+            borderTopWidth: StyleSheet.hairlineWidth,
+            borderColor: '#eeeeee'
+          }}>
+            <View style={styles.goodsName}>
+              <Text style={styles.goodsNameText} numberOfLines={2}>{item.goodsName}</Text>
+            </View>
+            <View style={styles.supplierNickName}>
+              <Text style={styles.supplierNickNameText}>{item.supplier.nickname}</Text>
+            </View>
+            <View style={styles.goodsAttr}>
+              {this._returnAttr('包邮', 1)}
+            </View>
+            <View style={styles.goodsPrice}>
+              <Text style={styles.goodsPriceText}>
+                ￥<Text style={{
         fontSize: 20,
         fontWeight: '400'
       }}>{this._returnPrice(item.goodsPrice)[0]}</Text>{'.' + this._returnPrice(item.goodsPrice)[1]}</Text>
+            </View>
           </View>
         </View>
-      </View>
+      </TouchableHighlight>
     );
   }
   _returnPrice(number) {

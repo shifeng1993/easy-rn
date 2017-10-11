@@ -134,7 +134,8 @@ const AppNavigator = StackNavigator({
   Main: {
     screen: tabbar,
     navigationOptions: {
-      header: null
+      header: null,
+      gesturesEnabled: false
     }
   },
   Login: {
@@ -147,31 +148,36 @@ const AppNavigator = StackNavigator({
   SignIn: {
     screen: SignIn,
     navigationOptions: {
-      header: null
+      header: null,
+      gesturesEnabled: false
     }
   },
   SignUp: {
     screen: SignUp,
     navigationOptions: {
-      header: null
+      header: null,
+      gesturesEnabled: false
     }
   },
   UserInfo: {
     screen: UserInfo,
     navigationOptions: {
-      header: null
+      header: null,
+      gesturesEnabled: false
     }
   },
   EditNickName: {
     screen: EditNickName,
     navigationOptions: {
-      header: null
+      header: null,
+      gesturesEnabled: false
     }
   },
   GoodsDetails: {
     screen: GoodsDetails,
     navigationOptions: {
-      header: null
+      header: null,
+      gesturesEnabled: false
     }
   }
 }, {

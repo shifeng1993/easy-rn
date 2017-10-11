@@ -18,10 +18,18 @@ class GoodsDetails extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      nickname: null
+      goodsId: null
+    }
+  }
+  componentWillMount() {
+    for (let i = 0; i < navigation.state.routes.length; i++) {
+      if (navigation.state.routes[i].routeName === 'GoodsDetails') {
+        this.setState({goodsId: navigation.state.routes[i].params.goodsId})
+      }
     }
   }
   render() {
+    console.log(this.state.goodsId)
     return (
       <View style={styles.container}>
         <StatusBar backgroundColor={"#cbcbcb"} barStyle={"light-content"}/>
@@ -35,11 +43,37 @@ class GoodsDetails extends Component {
           styles.content, {
             backgroundColor: '#f4f4f4'
           }
-        ]}>
-        </View>
+        ]}></View>
         <Toast ref="toast"/>
       </View>
     );
+  }
+  _navigatorLeft = () => {
+    return (<MCIcon
+      name="arrow-left"
+      size={24}
+      style={{
+      textAlign: 'center'
+    }}
+      onPress={() => {
+      this
+        .props
+        .navigation
+        .goBack();
+    }}
+      color="#333"/>)
+  }
+  _navigatorRight = () => {
+    return (<MCIcon
+      name="menu"
+      size={24}
+      style={{
+      textAlign: 'center'
+    }}
+      onPress={() => {
+      alert(1)
+    }}
+      color="#333"/>)
   }
 }
 
