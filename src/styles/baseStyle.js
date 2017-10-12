@@ -10,7 +10,8 @@ const baseStyle = StyleSheet.create({
   container: {
     flex: 1,
     // justifyContent: 'center', alignItems: 'center',
-    backgroundColor: '#F5FCFF'
+    backgroundColor: '#F5FCFF',
+    position: 'relative'
   },
   content: {
     flex: 1,

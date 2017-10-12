@@ -6,7 +6,7 @@ import SignIn from './SignIn'
 import SignUp from './SignUp'
 import UserInfo from './UserInfo'
 import EditNickName from './UserInfo/EditNickName'
-import GoodsDetails from './Main/Home/GoodsDetails'
+import GoodsDetails from './GoodsDetails'
 
 export {
   Home,

@@ -6,10 +6,23 @@ import {
   FlatList,
   Dimensions,
   ActivityIndicator,
-  TouchableHighlight
+  TouchableHighlight,
+  StatusBar,
+  Platform
 } from 'react-native';
 import Orientation from 'react-native-orientation';
 const {height, width} = Dimensions.get('window');
+
+const isIphoneX = () => {
+  const {height, width} = Dimensions.get('window');
+  let iphoneX = parseFloat((width/height).toString().substring(0,5));
+  let iphoneY = parseFloat((height/width).toString().substring(0,5));
+  if(Platform.OS === 'ios' && iphoneX === 2.165 || Platform.OS === 'ios' &&  iphoneY === 2.165) {
+    return true
+  } else {
+    return false
+  }
+}
 
 export default class Navigator extends Component {
   constructor(props) {
@@ -20,6 +33,7 @@ export default class Navigator extends Component {
     backgroundColor: 'rgba(0,0,0,0)',
     title: '',
     titleColor: '#000',
+    absolute: false,
     renderLeft: null,
     renderMiddle: null,
     renderRight: null
@@ -37,7 +51,9 @@ export default class Navigator extends Component {
     return (
       <View
         style={[
-        styles.header, {
+        this.props.absolute
+          ? styles.header1
+          : styles.header, {
           backgroundColor: this.props.backgroundColor
         }
       ]}>
@@ -105,6 +121,24 @@ const styles = StyleSheet.create({
         ? (width / 8)
         : (height / 8))),
     alignItems: 'center'
+  },
+  header1: {
+    flexDirection: 'row',
+    padding: 10,
+    position: 'absolute',
+    width: width,
+    top: Platform.OS === 'ios'
+    ? (isIphoneX()
+      ? 44
+      : 20)
+    : StatusBar.currentHeight,
+    height: (Orientation.getInitialOrientation() === 'PORTRAIT')
+      ? (width / 8)
+      : (((Orientation.getInitialOrientation() === 'PORTRAITUPSIDEDOWN')
+        ? (width / 8)
+        : (height / 8))),
+    alignItems: 'center',
+    zIndex: 1
   },
   headerLeft: {
     flex: 1

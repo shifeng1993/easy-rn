@@ -22,9 +22,9 @@ global.Modal = Modal
 // 识别iphonex
 const isIphoneX = () => {
   const {height, width} = Dimensions.get('window');
-  let iphoneX = parseFloat((width/height).toString().substring(0,5));
-  let iphoneY = parseFloat((height/width).toString().substring(0,5));
-  if(Platform.OS === 'ios' && iphoneX === 2.165 || Platform.OS === 'ios' &&  iphoneY === 2.165) {
+  let iphoneX = parseFloat((width / height).toString().substring(0, 5));
+  let iphoneY = parseFloat((height / width).toString().substring(0, 5));
+  if (Platform.OS === 'ios' && iphoneX === 2.165 || Platform.OS === 'ios' && iphoneY === 2.165) {
     return true
   } else {
     return false
@@ -35,7 +35,6 @@ const isIphoneX = () => {
 global.isIphoneX = isIphoneX()
 global.storage = AsyncStorage;
 global.http = http;
-
 
 // 以下是同步路由状态到redux函数
 const navReducer = (state, action) => {
@@ -49,9 +48,11 @@ class App extends Component {
   componentWillMount() {
     // 禁止横屏
     Orientation.lockToPortrait();
-    storage.getItem('useruuid').then(useruuid => {
-      this.setState((prevState, props) => ({useruuid: useruuid}))
-    })
+    storage
+      .getItem('useruuid')
+      .then(useruuid => {
+        this.setState((prevState, props) => ({useruuid: useruuid}))
+      })
   }
   /*处理安卓硬件返回按键 开始*/
   componentDidMount() {
@@ -65,11 +66,7 @@ class App extends Component {
     const currentScreen = this.getCurrentRouteName(nav)
     const goHome = NavigationActions.reset({
       index: 0,
-      actions: [
-        NavigationActions.navigate({ 
-          routeName: 'Main'
-      })
-      ]
+      actions: [NavigationActions.navigate({routeName: 'Main'})]
     })
     if (nav.index === 0) {
       return false;
@@ -80,7 +77,7 @@ class App extends Component {
       } else {
         dispatch(NavigationActions.back());
       }
-    } else{
+    } else {
       dispatch(NavigationActions.back());
     }
     return true;
