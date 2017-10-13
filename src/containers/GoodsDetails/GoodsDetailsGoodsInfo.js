@@ -6,7 +6,8 @@ import {
   ScrollView,
   Image,
   Dimensions,
-  TouchableHighlight
+  TouchableHighlight,
+  TouchableOpacity
 } from 'react-native';
 import Orientation from 'react-native-orientation';
 
@@ -77,11 +78,17 @@ class GoodsDetailsGoodsInfo extends Component {
             }
           ]}><FaIcon name="check-circle-o" size={12} color="#ff5000"/>7天无理由</Text>
         </View>
-        <View style={goodsStyle.goodsAttr}></View>
+        <TouchableHighlight style={goodsStyle.goodsAttr} underlayColor={'rgba(0,0,0,0)'} onPress={this.props.showGoodsAttrModal}>
+          <View style={{flex:1}}>
+            <Text style={{textAlign:'left'}}>选择口味</Text>
+            <FaIcon name="angle-right" size={12} style={{textAlign:'right'}} color="#ccc"/>
+          </View>
+        </TouchableHighlight>
         <View style={goodsStyle.goodsParams}></View>
       </View>
     );
   }
+
   _returnPrice = (number) => {
     return ((number / 100).toString().includes('.')
       ? (((number / 100).toString().split(".")[1].length === 1)
@@ -126,9 +133,13 @@ const goodsStyle = StyleSheet.create({
     fontSize: 12
   },
   goodsAttr: {
-    height: 100
+    height: 100,
+    flexDirection: 'row',
+    alignItems: 'center'
   },
   goodsParams: {
-    height: 100
+    height: 100,
+    flexDirection: 'row',
+    alignItems: 'center'
   }
 })

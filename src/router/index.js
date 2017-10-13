@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
-import {StyleSheet, Dimensions, Platform} from 'react-native';
-import {StackNavigator, TabNavigator, NavigationActions} from 'react-navigation';
+import {View, Text, StyleSheet, Dimensions, Platform} from 'react-native';
+import {DrawerNavigator, StackNavigator, TabNavigator, NavigationActions} from 'react-navigation';
 import Orientation from 'react-native-orientation';
 
 import CardStackStyleInterpolator from 'react-navigation/src/views/CardStack/CardStackStyleInterpolator';
@@ -28,6 +28,29 @@ const isIphoneX = () => {
     return false
   }
 }
+
+const Home1 = ({navigation}) => (
+  <View>
+    <Text>Home1</Text>
+    <Button
+      title="Open Home Drawer"
+      onPress={() => navigation.navigate('DrawerOpen')}/>
+  </View>
+);
+
+const index = DrawerNavigator({
+  main: {
+    screen: Cart
+  },
+  Home1: {
+    screen: Home1
+  },
+}, {
+  contentComponent: props => <View>
+      <Text>hello</Text>
+    </View>
+})
+
 const tabbar = TabNavigator({
   Home: {
     screen: Home,
@@ -43,7 +66,7 @@ const tabbar = TabNavigator({
     }
   },
   Cart: {
-    screen: Cart,
+    screen: index,
     navigationOptions: {
       tabBarLabel: '购物车',
       tabBarIcon: ({tintColor}) => (<IonIcon name="ios-cart" size={28} color={tintColor}/>),
