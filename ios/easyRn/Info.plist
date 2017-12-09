@@ -40,26 +40,16 @@
 	<false/>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string/>
-  <!-- 新增权限 start-->
-  <key>NSCameraUsageDescription</key>
-	<string></string>
-	<key>NSPhotoLibraryUsageDescription</key>
-	<string></string>
-  <!-- 新增权限 end -->
 	<key>NSAppTransportSecurity</key>
 	<dict>
-    <!-- 支持http -->
-    <key>NSAllowsArbitraryLoads</key>
-		<true/>
-    <!-- 注释掉白名单 -->
-		<!-- <key>NSExceptionDomains</key>
+		<key>NSExceptionDomains</key>
 		<dict>
 			<key>localhost</key>
 			<dict>
 				<key>NSExceptionAllowsInsecureHTTPLoads</key>
 				<true/>
 			</dict>
-		</dict> -->
+		</dict>
 	</dict>
 	<key>UIAppFonts</key>
 	<array>
@@ -75,5 +65,15 @@
 		<string>SimpleLineIcons.ttf</string>
 		<string>Zocial.ttf</string>
 	</array>
+  <!-- 图片选择 -->
+  <key>NSPhotoLibraryUsageDescription</key>
+  <string>$(PRODUCT_NAME) would like access to your photo gallery</string>
+  <key>NSCameraUsageDescription</key>
+  <string>$(PRODUCT_NAME) would like to use your camera</string>
+  <key>NSPhotoLibraryAddUsageDescription</key>
+  <string>$(PRODUCT_NAME) would like to save photos to your photo gallery</string>
+  <key>NSMicrophoneUsageDescription</key>
+  <string>$(PRODUCT_NAME) would like to your microphone (for videos)</string>
+  <!-- 图片选择 -->
 </dict>
 </plist>

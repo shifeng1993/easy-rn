@@ -22,7 +22,7 @@ export default class http {
       }
       return res
     } catch (error) {
-      return error
+      console.warn(error)
     }
   }
   static async post(url, params) {
@@ -30,7 +30,7 @@ export default class http {
       let res = await axios.post(url, params)
       return res
     } catch (error) {
-      return error
+      console.warn(error)
     }
   }
   static async patch(url, params) {
@@ -38,7 +38,7 @@ export default class http {
       let res = await axios.patch(url, params)
       return res
     } catch (error) {
-      return error
+      console.warn(error)
     }
   }
   static async put(url, params) {
@@ -46,7 +46,7 @@ export default class http {
       let res = await axios.put(url, params)
       return res
     } catch (error) {
-      return error
+      console.warn(error)
     }
   }
   static async delete(url, params) {
@@ -57,7 +57,7 @@ export default class http {
       let res = await axios.post(url, params)
       return res
     } catch (error) {
-      return error
+      console.warn(error)
     }
   }
   static async upload(url, formdata) {
@@ -70,7 +70,7 @@ export default class http {
       let res = await axios.post(url, formdata, config)
       return res
     } catch (error) {
-      return error
+      console.warn(error)
     }
   }
 }

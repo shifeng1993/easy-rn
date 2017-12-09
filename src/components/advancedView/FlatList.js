@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {StyleSheet, View, Text, Platform, Dimensions, ActivityIndicator} from 'react-native';
-import FlatList from "react-native-ultimate-listview";
+import { UltimateListView, UltimateRefreshView } from 'react-native-ultimate-listview'
 import {LoadingSpinner} from "../index";
 
 // 常量设置
@@ -20,7 +20,7 @@ class list extends Component {
       onViewableItemsChanged
     } = this.props
     return (
-      <FlatList
+      <UltimateListView
         {...this.props}
         ref={(ref) => this.listView = ref}
         keyExtractor={(item, index) => `${index} - ${item}`}
@@ -74,7 +74,9 @@ class list extends Component {
   };
   _renderEmptyView = () => {
     return (
-      <Text>列表是空滴，刷新试试~</Text>
+      <View style={{flex:1,justifyContent:'center',alignItems:'center'}}>
+        <Text style={{color:'#fff'}}>列表是空滴，刷新试试~</Text>
+      </View>
     );
   }
   _renderPaginationWaitingView = () => {

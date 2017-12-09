@@ -110,10 +110,10 @@ export default class GoodsDetails extends Component {
               name="close-circle-outline"
               size={28}
               style={{
-                position:'absolute',
-                zIndex:1,
-                top: 30,
-                right: 10
+              position: 'absolute',
+              zIndex: 1,
+              top: 30,
+              right: 10
             }}
               onPress={() => {
               this._hideModal()
@@ -123,8 +123,7 @@ export default class GoodsDetails extends Component {
               <View style={goodsAttrStyle.goodsAttrInfo}>
                 <Text
                   style={[goodsAttrStyle.goodsAttrInfoItem, goodsAttrStyle.goodsAttrPriceText]}>￥
-                  <Text
-                    style={{
+                  <Text style={{
                     fontSize: 16
                   }}>{this._returnPrice(goods.goodsPrice)[0]}
                   </Text>

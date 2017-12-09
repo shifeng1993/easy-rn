@@ -44,7 +44,7 @@ const index = DrawerNavigator({
   },
   Home1: {
     screen: Home1
-  },
+  }
 }, {
   contentComponent: props => <View>
       <Text>hello</Text>
@@ -56,26 +56,14 @@ const tabbar = TabNavigator({
     screen: Home,
     navigationOptions: {
       tabBarLabel: '主页',
-      tabBarIcon: ({tintColor}) => (<IonIcon name="ios-home" size={28} color={tintColor}/>),
-      tabBarOnPress: (({
-        route,
-        index
-      }, jumpToIndex) => {
-        jumpToIndex(index);
-      })
+      tabBarIcon: ({tintColor}) => (<IonIcon name="ios-home" size={28} color={tintColor}/>)
     }
   },
   Cart: {
     screen: index,
     navigationOptions: {
       tabBarLabel: '购物车',
-      tabBarIcon: ({tintColor}) => (<IonIcon name="ios-cart" size={28} color={tintColor}/>),
-      tabBarOnPress: (({
-        route,
-        index
-      }, jumpToIndex) => {
-        jumpToIndex(index);
-      })
+      tabBarIcon: ({tintColor}) => (<IonIcon name="ios-cart" size={28} color={tintColor}/>)
     }
   },
   My: {
@@ -83,20 +71,14 @@ const tabbar = TabNavigator({
     navigationOptions: {
       tabBarLabel: '我的',
       tabBarIcon: ({tintColor}) => (<IonIcon name="ios-person" size={28} color={tintColor}/>),
-      tabBarOnPress: (({
-        route,
-        index
-      }, jumpToIndex) => {
-        jumpToIndex(index);
-        storage
-          .getItem('useruuid')
-          .then(useruuid => {
-            if (!useruuid) {
-              navigation.navigate('Login')
-            } else {
-              jumpToIndex(index);
-            }
-          })
+      tabBarOnPress: ((e) => {
+        storage.getItem('useruuid').then(useruuid => {
+          if (!useruuid) {
+            navigation.navigate('Login')
+          } else {
+            e.jumpToIndex(e.scene.index);
+          }
+        })
       })
     }
   }
